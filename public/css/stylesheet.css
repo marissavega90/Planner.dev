@@ -1,0 +1,31 @@
+/*Create an external stylesheet and link it to your todo list page.
+Add a style to change the color of the headers on your page 
+and make them underlined.
+Add a style to change the background color of the page.
+Add a style to change the list-style to something other than the default.
+Add a style to change the font for the entire page.
+Continue experimenting with styles to increase the 
+visual appeal of the todo list.
+When complete, save your files, commit the files to 
+your git repository, and push to GitHub*/
+
+body {
+    background-color: #fdf5c9;
+    font-style: "Times New Roman", Times, Serif;
+}
+
+h2 {
+    color: #ffc5d9;
+    text-decoration: underline;
+    font-style: "Times New Roman", Times, Serif;
+}
+
+ul {
+    list-style: upper-roman;
+    background-color: #ffcb85;
+    font-style: "Times New Roman", Times, Serif;
+    color: #894500;
+}
+
+
+

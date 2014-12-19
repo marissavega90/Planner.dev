@@ -1,0 +1,63 @@
+body {
+            background-image: url(/img/background.jpg);
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: 70px;
+        }
+        .navbar {
+            background-color: rgba(128, 128, 128, 0.0); /* Red [0-255], Green [0-255], Blue [0-255], Alpha [0-1] */
+            border-color: rgba(128, 128, 128, 0.0);
+        }
+        .container {
+            border: 2px solid;
+            border-color: white;
+            height: 54px;
+            width: 370px;
+            padding: 1px;
+            margin: 40px;
+            margin-left: 245px;
+            text-align: center;
+        }
+        .container2 {
+            /*border: 2px solid;
+            border-color: white;*/
+            height: 54px;
+            width: 370px;
+            padding: 1px;
+            margin: 40px;
+            margin-left: 245px;
+            text-align: justify;
+            color: #FFFFFF;
+            text-indent: 35px;
+        }
+        table, td, th, tr {
+            background-color: rgba(128, 128, 128, 0.0);
+            height: 38px;
+            width: 370px;
+            padding: 1px;
+            margin: 40px;
+            margin-left: 250px;
+            text-align: justify;
+            color: #FFFFFF;
+        }
+        .table {
+            height: 135px;
+            width: 360px;
+            background-color: rgba(128, 128, 128, 0.3);
+        }
+        .table-bordered {
+            border: 2px solid #FFFFFF;
+        }
+
+        #white {
+            color: white;
+        }
+
+        label {
+            color: white;
+        }
+
+        .fa-minus-square-o {
+            color: white;
+        }

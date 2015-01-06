@@ -141,7 +141,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
     <?
     // Check if we saved a file
-    if (isset($savedFilename)): 
+    if (isset($savedFilename)): ?>
         // If we did, show a link to the uploaded file
         <?= <p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>; ?>
     

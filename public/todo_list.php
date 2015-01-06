@@ -120,12 +120,11 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
     <div class="container">
         <h4 class="lead">What Do You Want To Do?</h4>
             <ul id="white">
-                <?php
-                    foreach ($listItems as $key => $item) {
-                        echo "<li>{$item} <a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>";
-                        echo "<form method=\"GET\" action=\"?remove={$key}\"></form>";
-                    }; 
-                ?>  
+                <?  foreach ($listItems as $key => $item): ?> 
+                        <li><?= {$item} ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>";
+                        <?= <form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
+                 
+                <? endforeach; ?>  
             </ul>
             <br>
             <br>
@@ -140,13 +139,13 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
             </form>
                 <h4>Upload File</h4>
 
-    <?php
+    <?
     // Check if we saved a file
-    if (isset($savedFilename)) {
+    if (isset($savedFilename)): 
         // If we did, show a link to the uploaded file
-        echo "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>";
-    }
-    ?>
+        <?= <p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>; ?>
+    
+    <? endif; ?>
 
     <form method="POST" enctype="multipart/form-data">
         <p>

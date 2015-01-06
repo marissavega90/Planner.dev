@@ -121,7 +121,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
         <h4 class="lead">What Do You Want To Do?</h4>
             <ul id="white">
                 <?  foreach ($listItems as $key => $item): ?> 
-                        <li><?= {$item} ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>";
+                        <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>";
                         <?= <form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
                  
                 <? endforeach; ?>  

@@ -121,8 +121,8 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
         <h4 class="lead">What Do You Want To Do?</h4>
             <ul id="white">
                 <?  foreach ($listItems as $key => $item): ?> 
-                        <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>";
-                        <?= <form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
+                        <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>
+                        <?= "<form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
                  
                 <? endforeach; ?>  
             </ul>
@@ -143,7 +143,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
     // Check if we saved a file
     if (isset($savedFilename)): ?>
         // If we did, show a link to the uploaded file
-        <?= <p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>; ?>
+        <?= "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>"; ?>
     
     <? endif; ?>
 

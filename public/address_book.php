@@ -16,6 +16,38 @@ function saveFile ($filename) {
 
 }
 
+function read_Address_Book($fileName) {
+
+		$handle = fopen($fileName, 'r');
+
+		$addressBook = [];
+
+			while(!feof($handle)) {
+				
+				$row = fgetcsv($handle);
+				
+				if (!empty($row)) {
+					
+					$addressBook[] = $row;
+				}
+			}
+
+		return $addressBook;
+
+	fclose($handle);
+		
+}
+
+$addressBook = read_Address_Book($fileName);
+
+
+if (!empty($_POST)) {
+		
+		$addressBook[] = $_POST;
+		saveFile($fileName, $addressBook);
+	} else {
+		echo "Error! Must fill out all forms!";
+}
 
 ?>
 

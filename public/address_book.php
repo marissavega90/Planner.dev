@@ -27,7 +27,7 @@ function read_Address_Book($fileName) {
 				$row = fgetcsv($handle);
 				
 				if (!empty($row)) {
-					
+
 					$addressBook[] = $row;
 				}
 			}
@@ -59,11 +59,12 @@ if (!empty($_POST)) {
 
 	<table>
 		<tr>
-			<th>Header</th>
+
 			<th>Address</th>
 			<th>City</th>
 			<th>State</th>
 			<th>Zip</th>
+			
 		</tr>
 				
 		<?foreach ($addressBook as $entry): ?>

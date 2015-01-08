@@ -73,8 +73,13 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
 	.table {
 
-		background-color: rgba(128, 128, 128, 0.7);
+		background-color: rgba(235, 235, 235, 0.5);
 
+	}
+
+	.navbar {
+
+		background-color: rgba(235,235,235, 1.0);
 	}
 
 	</style>
@@ -98,7 +103,6 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 					<li data-slide="1" class="col-12 col-sm-2"><a id="menu-link-1" href="#slide-1" title="Next Section"><span class="icon icon-home"></span> <span class="text">HOME</span></a></li>
 				</ul>
 				<div class="row">
-					<div class="col-sm-2 active-menu"></div>
 				</div>
 			</div><!-- /.nav-collapse -->
 		</div><!-- /.container -->
@@ -153,7 +157,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
 					<br>
 
-					<h1>Upload File</h1>
+					<h1><span class="font-thin">Upload File</span></h1>
 
 						<? if (isset($savedFilename)): ?>
 
@@ -162,16 +166,21 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 						<? endif; ?>
 
 
-					    <form method="POST" enctype="multipart/form-data" action="/address_book/address_book.php">
+					    <form method="POST" enctype="multipart/form-data" action="/address_book/index.php">
 					        <p>
 					            <label for="file1">File to upload: </label>
-					            <input type="file" id="file1" name="file1">
+					            <div class="row">
+					      			<div class="col-8">
+
+					            		<input type="file" id="file1" name="file1">
+					            	</div>
+					            </div>
 					        </p>
 					        <p>
 					            <input type="submit" value="Upload">
 					        </p>
 					    </form>
-    
+
 					<br>
 				</div><!-- /col-12 -->
 			</div><!-- /row -->

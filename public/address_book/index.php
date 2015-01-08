@@ -19,6 +19,32 @@ if (isset($_GET['remove'])) {
 	$AddressDataStore->writeAddressBook($addressBook);
 }
 
+if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
+	    // Set the destination directory for uploads
+	    $uploadDir = '/vagrant/sites/planner.dev/public/uploads/';
+	    // Grab the filename from the uploaded file by using basename
+	    $filename = basename($_FILES['file1']['name']);
+	    // Create the saved filename using the file's original name and our upload directory
+	    $savedFilename = $uploadDir . $filename;
+
+	    $uploadedAddressData = new AddressDataStore($savedFilename);
+
+	    if(substr($filename, -3) == 'csv') {
+
+		    // Move the file from the temp location to our uploads directory
+		    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
+
+		    $addressBook = array_merge($addressBook, $uploadedAddressData->readAddressBook());
+
+		    $AddressDataStore->writeAddressBook($addressBook);
+
+			} else {
+				echo "There was an error processing your file, please use CSV file.";
+			}
+	}
+
+?>
+
 ?>
 
 <!doctype html>
@@ -82,7 +108,7 @@ if (isset($_GET['remove'])) {
 	<!-- === MAIN Background === -->
 	<div class="slide story" id="slide-1" data-slide="1">
 		<div class="container">
-			<div id="home-row-1" class="row clearfix">
+			<div id="home-row-1" class="row">
 				<div class="col-12">
 					<h1 class="font-semibold">ADDRESS BOOK <span class="font-thin">PROJECT</span></h1>
 
@@ -102,29 +128,50 @@ if (isset($_GET['remove'])) {
 									<?php foreach ($entry as $value): ?>
 										<td><?= $value ?></td>
 									<?php endforeach ?>
-										<td><a href="/address_book/index.php?remove=<?= $key ?>"><span class="text">X</span></a></td>
+										<td><a target="_blank" href="/address_book/index.php?remove=<?= $key ?>">X</a></td>
 								
 								</tr>
 							<? endforeach; ?>
 
 						</table>
 
-						<form name="additem" method="POST" action="index.php">
+						<form method="POST" action="index.php">
 			 
 
-							<input type="text" id="address" name="address" placeholder="Address">
+							<input type="text" name="address" placeholder="Address">
 
-							<input type="text" id="city" name="city" placeholder="City">
+							<input type="text" name="city" placeholder="City">
 	
-							<input type="text" id="state" name="state" placeholder="State">
+							<input type="text" name="state" placeholder="State">
 
-							<input type="text" id="zip" name="Zip" placeholder="Zip">
+							<input type="text" name="Zip" placeholder="Zip">
 
 							<button value="submit">Submit</button>
 	
 			 
 						</form>
+
 					<br>
+
+					<h1>Upload File</h1>
+
+						<? if (isset($savedFilename)): ?>
+
+							<p>You can download your file <a href="/address_book/uploads/<?= $filename ?>">here</a>.</p>
+
+						<? endif; ?>
+
+
+					    <form method="POST" enctype="multipart/form-data" action="/address_book/address_book.php">
+					        <p>
+					            <label for="file1">File to upload: </label>
+					            <input type="file" id="file1" name="file1">
+					        </p>
+					        <p>
+					            <input type="submit" value="Upload">
+					        </p>
+					    </form>
+    
 					<br>
 				</div><!-- /col-12 -->
 			</div><!-- /row -->
@@ -146,31 +193,5 @@ if (isset($_GET['remove'])) {
 
 </body>
 
-	<!-- SCRIPTS -->
-	<script src="js/html5shiv.js"></script>
-	<script src="js/jquery-1.10.2.min.js"></script>
-	<script src="js/jquery-migrate-1.2.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.easing.1.3.js"></script>
-	<script type="text/javascript" src="fancybox/jquery.fancybox.pack-v=2.1.5.js"></script>
-	<script src="js/script.js"></script>
-	
-	<!-- fancybox init -->
-	<script>
-	$(document).ready(function(e) {
-		var lis = $('.nav > li');
-		menu_focus( lis[0], 1 );
-		
-		$(".fancybox").fancybox({
-			padding: 10,
-			helpers: {
-				overlay: {
-					locked: false
-				}
-			}
-		});
-	
-	});
-	</script>
 
 </html>

@@ -11,21 +11,40 @@ your git repository, and push to GitHub*/
 
 body {
     background-color: #fdf5c9;
-    font-style: "Times New Roman", Times, Serif;
+    font-family: "Times New Roman", Times, Serif;
+    font-style: italic;
+    
 }
 
-h2 {
+h2, form {
     color: #ffc5d9;
     text-decoration: underline;
-    font-style: "Times New Roman", Times, Serif;
+    font-family: "Times New Roman", Times, Serif;
+    text-align: center;
 }
 
 ul {
     list-style: upper-roman;
     background-color: #ffcb85;
-    font-style: "Times New Roman", Times, Serif;
+    font-family: "Times New Roman", Times, Serif;
     color: #894500;
+    font-weight: bold;
+    width: 200px;
+    border: 2px solid;
+    border-radius: 25px;
+    padding: 5px;
 }
+
+#animation {
+    -webkit-animation: mymove 5s infinite; /* Chrome, Safari, Opera */
+    animation: mymove 5s infinite;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes mymove {
+    60% {text-shadow: 5px 10px 15px pink;}
+}
+
 
 
 

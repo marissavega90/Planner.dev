@@ -60,8 +60,10 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 			<th>Zip</th>
 			
 		</tr>
-				
-		<?foreach ($addressBook as $key => $entry): ?>
+
+		<? foreach ($addressBook as $key => $entry): ?>
+
+
 			<tr>
 				<?php foreach ($entry as $value): ?>
 					<td><?= $value ?></td>

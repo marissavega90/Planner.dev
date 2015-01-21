@@ -1,6 +1,8 @@
 <?php
 
-    $listItems = [];
+$listItems = [];
+
+
 
 
 // Verify there were uploaded files and no errors
@@ -17,6 +19,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
     // Move the file from the temp location to our uploads directory
     move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 }
+
 
 
     function openFile($filename) {
@@ -39,11 +42,26 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
             fclose($handle);
 
             // echo "The save was successful." . PHP_EOL;
-        }
+    }
+
+
+    // if (isset($_POST['todo']) {
+    //     strlenthrow new Exception ('Input is more than 240 characters!');
+    // }
+
 
     $listItems = openFile('data/todo.txt');
 
     if (isset($_POST['todo'])) {
+
+        if(strlen($_POST['todo']) > 240) 
+        {
+            throw new Exception ('Must input item less than 240 characters!');
+        } elseif(strlen($_POST['todo']) == 0)
+        {
+            throw new Exception ('Must input an item!');
+        }
+    
 
         $listItems[] = $_POST['todo'];
 
@@ -118,44 +136,48 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
     </div><!-- /.container-fluid -->
 </nav>
     <div class="container">
-        <h4 class="lead">What Do You Want To Do?</h4>
-            <ul id="white">
-                <?  foreach ($listItems as $key => $item): ?> 
-                        <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>
-                        <?= "<form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
-                 
-                <? endforeach; ?>  
-            </ul>
-            <br>
-            <br>
-            <form method="POST" action="todo_list.php">
-                <h6 id="add">Add New Item <i class="fa fa-plus-square fa-1x"></i></h6>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h4 class="lead">What Do You Want To Do?</h4>
+                    <ul id="white">
+                        <?  foreach ($listItems as $key => $item): ?> 
+                                <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>
+                                <?= "<form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
+                         
+                        <? endforeach; ?>  
+                    </ul>
+                    <br>
+                    <br>
+                    <form method="POST" action="todo_list.php">
+                        <h6 id="add">Add New Item <i class="fa fa-plus-square fa-1x"></i></h6>
+                        <p>
+                            <label for="todo">To</label>
+                            <input id="todo" name="todo" type="text" placeholder="Add your task">
+                        </p>
+                    <br>
+                        <button type="submit">Add File</button>
+                    </form>
+                        <h4>Upload File</h4>
+
+            <?
+            // Check if we saved a file
+            if (isset($savedFilename)): ?>
+                // If we did, show a link to the uploaded file
+                <?= "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>"; ?>
+            
+            <? endif; ?>
+
+            <form method="POST" enctype="multipart/form-data">
                 <p>
-                    <label for="todo">To</label>
-                    <input id="todo" name="todo" type="text" placeholder="Add your task">
+                    <label for="file1">File to upload: </label>
+                    <input type="file" id="file1" name="file1">
                 </p>
-            <br>
-                <button type="submit">Add File</button>
+                <p>
+                    <input type="submit" value="Upload">
+                </p>
             </form>
-                <h4>Upload File</h4>
-
-    <?
-    // Check if we saved a file
-    if (isset($savedFilename)): ?>
-        // If we did, show a link to the uploaded file
-        <?= "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>"; ?>
-    
-    <? endif; ?>
-
-    <form method="POST" enctype="multipart/form-data">
-        <p>
-            <label for="file1">File to upload: </label>
-            <input type="file" id="file1" name="file1">
-        </p>
-        <p>
-            <input type="submit" value="Upload">
-        </p>
-    </form>
+            </div>
+        </div>
     </div>
     
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

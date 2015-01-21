@@ -9,8 +9,8 @@ class AddressDataStore extends Filestore
 
      public function __construct($input = 'address_book.csv')
      {
-
-     	$this->filename = $input;
+     	// $this->filename = $input;
+        parent::__construct($input);
      }
 
 
@@ -18,7 +18,7 @@ class AddressDataStore extends Filestore
 
      public function readAddressBook()
      {
-       return $this->readCSV(); 
+       return $this->read(); 
 
 
 		
@@ -27,7 +27,7 @@ class AddressDataStore extends Filestore
     function writeAddressBook($addressBook)
     {
 
-    	$this->writeCSV($addressBook);
+    	$this->write($addressBook);
 
 	}
 

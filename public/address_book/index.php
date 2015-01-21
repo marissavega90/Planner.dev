@@ -2,21 +2,23 @@
 
 require_once 'includes/address_data_store.php';
 
-$AddressDataStore = new AddressDataStore;
+$AddressDataStore = new AddressDataStore('data/address_book.csv');
 
-$AddressDataStore->filename = 'data/address_book.csv';
+$addressBook = $AddressDataStore->read();
 
-$addressBook = $AddressDataStore->readAddressBook();
+
 
 if (!empty($_POST)) {
 	$addressBook[] = $_POST;
-	$AddressDataStore->writeAddressBook($addressBook);
+	$AddressDataStore->write($addressBook);
 }
+
+
 
 if (isset($_GET['remove'])) {
 	$id = $_GET['remove'];
 	unset($addressBook[$id]);
-	$AddressDataStore->writeAddressBook($addressBook);
+	$AddressDataStore->write($addressBook);
 }
 
 if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -34,9 +36,9 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 		    // Move the file from the temp location to our uploads directory
 		    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-		    $addressBook = array_merge($addressBook, $uploadedAddressData->readAddressBook());
+		    $addressBook = array_merge($addressBook, $uploadedAddressData->read());
 
-		    $AddressDataStore->writeAddressBook($addressBook);
+		    $AddressDataStore->write($addressBook);
 
 			} else {
 				echo "There was an error processing your file, please use CSV file.";
@@ -80,6 +82,17 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 	.navbar {
 
 		background-color: rgba(235,235,235, 1.0);
+	}
+
+	input {
+
+		margin: auto;
+	}
+
+	.btn-default {
+
+		background-color: white;
+		color: grey;
 	}
 
 	</style>
@@ -132,7 +145,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 									<?php foreach ($entry as $value): ?>
 										<td><?= $value ?></td>
 									<?php endforeach ?>
-										<td><a target="_blank" href="/address_book/index.php?remove=<?= $key ?>">X</a></td>
+										<td><a target="_blank" href="/address_book/index.php?remove=<?= $key ?>"><button class="btn btn-default">Delete</button></a></td>
 								
 								</tr>
 							<? endforeach; ?>
@@ -150,43 +163,47 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
 							<input type="text" name="Zip" placeholder="Zip">
 
-							<button value="submit">Submit</button>
+							<input id="addNew" name="addNew" type="button" class="btn btn-default" value="Submit"></input>
+							
+							<!-- <button class="btn btn-default" value="submit">Submit</button> -->
 	
 			 
 						</form>
 
 					<br>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3">
+							<h1><span class="font-thin">Upload File</span></h1>
 
-					<h1><span class="font-thin">Upload File</span></h1>
+								<? if (isset($savedFilename)): ?>
 
-						<? if (isset($savedFilename)): ?>
+									<p>You can download your file <a href="/address_book/uploads/<?= $filename ?>">here</a>.</p>
 
-							<p>You can download your file <a href="/address_book/uploads/<?= $filename ?>">here</a>.</p>
-
-						<? endif; ?>
+								<? endif; ?>
 
 
-					    <form method="POST" enctype="multipart/form-data" action="/address_book/index.php">
-					        <p>
-					            <label for="file1">File to upload: </label>
-					            <div class="row">
-					      			<div class="col-8">
-
-					            		<input type="file" id="file1" name="file1">
-					            	</div>
-					            </div>
-					        </p>
-					        <p>
-					            <input type="submit" value="Upload">
-					        </p>
-					    </form>
-
-					<br>
+							    <form method="POST" enctype="multipart/form-data" action="/address_book/index.php">
+							        <p>
+							            <label for="file1">File to upload: </label>
+							           
+							          		<input type="file" id="file1" name="file1">
+							             
+							        </p>
+							        <p>
+							            <input class="btn btn-default" type="submit" value="Upload">
+							        </p>
+							    </form>
+							</div>
+						</div>
+					</div>
+						<br>
+					</div>
 				</div><!-- /col-12 -->
 			</div><!-- /row -->
 			<div class="container">
 				<div id="home-row-1" class="row clearfix">
-					<div class="col-6 col-sm-6">
+					<div class="col-md-4 col-centered">
 						
 					</div>
 				</div>
@@ -194,7 +211,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 			<div id="home-row-2" class="row clearfix">
 				<div class="col-12 col-sm-4">
 				<div class="col-12 col-sm-4">
-				<div class="col-12 col-sm-4"><div class="home-hover navigation-slide" data-slide="5"><img src="images/s03.png"></div><span></span></div>
+				<div class="col-12 col-sm-4">
 			</div><!-- /row -->
 		</div><!-- /container -->
 	</div><!-- /slide1 -->

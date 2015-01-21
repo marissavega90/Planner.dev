@@ -12,16 +12,10 @@ body {
         .container {
             border: 2px solid;
             border-color: white;
-            height: 54px;
-            width: 370px;
-            padding: 1px;
-            margin: 40px;
-            margin-left: 245px;
             text-align: center;
+
         }
-        .container2 {
-            /*border: 2px solid;
-            border-color: white;*/
+     /*   .container2 {
             height: 54px;
             width: 370px;
             padding: 1px;
@@ -30,25 +24,25 @@ body {
             text-align: justify;
             color: #FFFFFF;
             text-indent: 35px;
-        }
+        }*/
         table, td, th, tr {
             background-color: rgba(128, 128, 128, 0.0);
-            height: 38px;
+            /*height: 38px;
             width: 370px;
             padding: 1px;
             margin: 40px;
-            margin-left: 250px;
+            margin-left: 250px;*/
             text-align: justify;
             color: #FFFFFF;
         }
-        .table {
+        /*.table {
             height: 135px;
             width: 360px;
             background-color: rgba(128, 128, 128, 0.3);
         }
         .table-bordered {
             border: 2px solid #FFFFFF;
-        }
+        }*/
 
         #white {
             color: white;

@@ -2,21 +2,41 @@
 
 require_once 'includes/address_data_store.php';
 
-$AddressDataStore = new AddressDataStore;
+$AddressDataStore = new AddressDataStore('data/address_book.csv');
 
-$AddressDataStore->filename = 'data/address_book.csv';
+$addressBook = $AddressDataStore->read();
 
-$addressBook = $AddressDataStore->readAddressBook();
+
+
 
 if (!empty($_POST)) {
+
+	if(strlen($_POST['address']) > 125) 
+	{
+	    throw new Exception ('Must input item less than 125 characters!');
+	}
+	if(strlen($_POST['city']) > 125) {
+		throw new Exception ('Must input item less than 125 characters!');
+	}
+	if(strlen($_POST['state']) > 125) {
+		throw new Exception ('Must input item less than 125 characters!');
+	}
+	if (strlen($_POST['zip']) > 125) {
+		throw new Exception ('Must input item less than 125 characters!');
+
+	} else {
+
 	$addressBook[] = $_POST;
-	$AddressDataStore->writeAddressBook($addressBook);
+	$AddressDataStore->write($addressBook);
+
+	}
 }
+
 
 if (isset($_GET['remove'])) {
 	$id = $_GET['remove'];
 	unset($addressBook[$id]);
-	$AddressDataStore->writeAddressBook($addressBook);
+	$AddressDataStore->write($addressBook);
 }
 
 if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -34,9 +54,9 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 		    // Move the file from the temp location to our uploads directory
 		    move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
 
-		    $addressBook = array_merge($addressBook, $uploadedAddressData->readAddressBook());
+		    $addressBook = array_merge($addressBook, $uploadedAddressData->read());
 
-		    $AddressDataStore->writeAddressBook($addressBook);
+		    $AddressDataStore->write($addressBook);
 
 			} else {
 				echo "There was an error processing your file, please use CSV file.";
@@ -62,15 +82,16 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 		</tr>
 
 		<? foreach ($addressBook as $key => $entry): ?>
-
+		
 
 			<tr>
-				<?php foreach ($entry as $value): ?>
-					<td><?= $value ?></td>
-				<?php endforeach ?>
+				<? foreach ($entry as $value): ?>
+					<td><?= $value; ?></td>
+				<? endforeach; ?>
 					<td><a href="/address_book/address_book.php?remove=<?= $key ?>">X</a></td>
 			
 			</tr>
+
 		<? endforeach; ?>
 
 	</table>
@@ -86,7 +107,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
 		<input type="text" id="zip" name="Zip" placeholder="Zip">
 
-		<button value="submit">Submit</button>
+		<button value="submit" id="addNew">Submit</button>
 	
 			 
 	</form>

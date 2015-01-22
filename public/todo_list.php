@@ -1,5 +1,11 @@
 <?php
 
+require_once '../inc/filestore.php';
+
+$ToDoDataStore = new Filestore('data/todo.txt');
+
+$toDoList = $ToDoDataStore->read();
+
 $listItems = [];
 
 
@@ -18,31 +24,17 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
     // Move the file from the temp location to our uploads directory
     move_uploaded_file($_FILES['file1']['tmp_name'], $savedFilename);
+
+
+
+    $toDoList = array_merge($toDoList, $ToDoDataStore->read("uploads/" . $filename));
+
+    $ToDoDataStore->write($toDoList);
 }
 
 
 
-    function openFile($filename) {
-        $contentsarray = [];
-        if(filesize($filename) > 0) {
-           $handle = fopen($filename, 'r');
-            $contents = trim(fread($handle, filesize($filename)));
-            $contentsarray = explode("\n", $contents);
-            fclose($handle); 
-        }
-        
-        return $contentsarray;
-    }
 
-    function save_file($filename,$array) {
-            $handle = fopen($filename, 'w');
-                foreach ($array as $item) {
-                    fwrite($handle, $item . PHP_EOL);
-                }
-            fclose($handle);
-
-            // echo "The save was successful." . PHP_EOL;
-    }
 
 
     // if (isset($_POST['todo']) {
@@ -50,23 +42,37 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
     // }
 
 
-    $listItems = openFile('data/todo.txt');
+    $listItems = $ToDoDataStore->read('data/todo.txt');
 
-    if (isset($_POST['todo'])) {
+    try {
 
-        if(strlen($_POST['todo']) > 240) 
-        {
-            throw new Exception ('Must input item less than 240 characters!');
-        } elseif(strlen($_POST['todo']) == 0)
-        {
-            throw new Exception ('Must input an item!');
+        if (isset($_POST['todo'])) {
+
+            if(strlen($_POST['todo']) > 240) {
+                throw new Exception ('Must input item less than 240 characters!');
+
+                // elseif(strlen($_POST['todo']) == 0)
+
+                // {
+                //     throw new Exception ('Must input an item!');
+                // }
+            
+
+                $listItems[] = $_POST['todo'];
+
+                $ToDoDataStore->write($listItems);
+
+            } 
         }
-    
-
-        $listItems[] = $_POST['todo'];
-
-        save_file('data/todo.txt', $listItems);
     }
+
+    catch (Exception $e) {
+
+        echo "<h3 align=\"center\" color=\"white\">Must input an item!</h3>";
+
+    }
+
+
     
 
     if (isset($_GET['remove'])) {
@@ -74,7 +80,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
         $id = $_GET['remove'];
         unset($listItems[$id]);
         $listItems = array_values($listItems);
-        save_file('data/todo.txt', $listItems);
+        $ToDoDataStore->write($listItems);
     }
 
     

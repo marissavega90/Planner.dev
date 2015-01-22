@@ -47,7 +47,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
 ?>
 
-?>
+
 
 <!doctype html>
 <html>

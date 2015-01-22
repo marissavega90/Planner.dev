@@ -10,28 +10,26 @@ $addressBook = $AddressDataStore->read();
 
 
 if (!empty($_POST)) {
+	try { 
+		if(strlen($_POST['address']) > 125 || empty($_POST['address'])) {
+	    	throw new Exception ('Must include Address less than 125 characters.');
+		}	
+		if(strlen($_POST['city']) > 125 || empty($_POST['city'])) {
+			throw new Exception ('Must include City less than 125 characters.');
+		}
+		if(strlen($_POST['state']) > 125 || empty($_POST['state'])) {
+			throw new Exception ('Must include State less than 125 characters.');
+		}
+		if (strlen($_POST['zip']) > 125 || empty($_POST['zip'])) {
+			throw new Exception ('Must include Zip less than 125 characters.');
+		}
 
-	if(strlen($_POST['address']) > 125) 
-	{
-	    throw new Exception ('Must input item less than 125 characters!');
-	}
-	if(strlen($_POST['city']) > 125) {
-		throw new Exception ('Must input item less than 125 characters!');
-	}
-	if(strlen($_POST['state']) > 125) {
-		throw new Exception ('Must input item less than 125 characters!');
-	}
-	if (strlen($_POST['zip']) > 125) {
-		throw new Exception ('Must input item less than 125 characters!');
-
-	} else {
-
-	$addressBook[] = $_POST;
-	$AddressDataStore->write($addressBook);
-
+		$addressBook[] = $_POST;
+		$AddressDataStore->write($addressBook);
+	} catch (Exception $e) {
+		echo $e->getMessage();
 	}
 }
-
 
 if (isset($_GET['remove'])) {
 	$id = $_GET['remove'];
@@ -68,10 +66,11 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 <html>
 <head>
     <title>Address Book</title>
+
 </head>
 <body>
 
-	<table>
+	<table border=1>
 		<tr>
 
 			<th>Address</th>
@@ -105,7 +104,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 	
 		<input type="text" id="state" name="state" placeholder="State">
 
-		<input type="text" id="zip" name="Zip" placeholder="Zip">
+		<input type="text" id="zip" name="zip" placeholder="Zip">
 
 		<button value="submit" id="addNew">Submit</button>
 	

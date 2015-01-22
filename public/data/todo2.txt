@@ -2,4 +2,5 @@ trolls
 unicorns
 magic
 fairies
-fairies
+wands
+spell books

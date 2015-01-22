@@ -1,5 +1,7 @@
 <?php
 
+class UnexpectedTypeException extends Exception { }
+
 require_once '../../inc/address_data_store.php';
 
 $AddressDataStore = new AddressDataStore('data/address_book.csv');
@@ -12,21 +14,22 @@ $addressBook = $AddressDataStore->read();
 if (!empty($_POST)) {
 	try { 
 		if(strlen($_POST['address']) > 125 || empty($_POST['address'])) {
-	    	throw new Exception ('Must include Address less than 125 characters.');
+	    	throw new UnexpectedTypeException ('Must include Address less than 125 characters.');
 		}	
 		if(strlen($_POST['city']) > 125 || empty($_POST['city'])) {
-			throw new Exception ('Must include City less than 125 characters.');
+			throw new UnexpectedTypeException ('Must include City less than 125 characters.');
 		}
 		if(strlen($_POST['state']) > 125 || empty($_POST['state'])) {
-			throw new Exception ('Must include State less than 125 characters.');
+			throw new UnexpectedTypeException ('Must include State less than 125 characters.');
 		}
 		if (strlen($_POST['zip']) > 125 || empty($_POST['zip'])) {
-			throw new Exception ('Must include Zip less than 125 characters.');
+			throw new UnexpectedTypeException ('Must include Zip less than 125 characters.');
 		}
 
 		$addressBook[] = $_POST;
 		$AddressDataStore->write($addressBook);
-	} catch (Exception $e) {
+
+	} catch (UnexpectedTypeException $e) {
 		echo $e->getMessage();
 	}
 }
@@ -80,18 +83,158 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style type="text/css">
+	table {
+	  border-collapse: separate;
+	  border-spacing: 0 5px;
+	}
+
+	thead th {
+	  background-color: #006DCC;
+	  color: white;
+	}
+
+	tbody td {
+	  background-color: #EEEEEE;
+	}
+
+	tr td:first-child,
+	tr th:first-child {
+	  border-top-left-radius: 6px;
+	  border-bottom-left-radius: 6px;
+	}
+
+	tr td:last-child,
+	tr th:last-child {
+	  border-top-right-radius: 6px;
+	  border-bottom-right-radius: 6px;
+	}
+
+	body {
+		background-image: url(images/addressbookbackground.jpg);
+		opacity: 50%;
+		background-color: rgba(128, 128, 128, 0.8); 
+	}
+
+	.navbar {
+
+		background-color: #40404C;
+	}
+
+	.table-bordered {
+		border-color: rgba(128, 128, 128, 0.0); 
+	}
+
+	.btn-default2 {
+		background-color: #EEE;
+		color: grey;
+	}
+
+	.btn-default3 {
+		background-color: #EEE;
+		color: grey;
+		border-color: rgba(128, 128, 128, 0.1);
+	}
+
+	.btn-default3:hover {
+		color: white;
+
+	}
+
+	th {
+		color: #3F5467;
+
+	}
+
+	h2 {
+
+		text-align: center;
+	}
+
+	.btn-lg {
+		display: block;
+		margin:0 auto;
+		background-color: #40404C;
+	}
+	
+    </style>
+
 </head>
 <body>
+
+
+	<!-- NAVBAR HERE! -->
+
+	<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Address Book</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!-- NAVBAR END! -->
+
+
+<!-- TABLE BEGIN! -->
+
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<table border=1>
+			<div class="col-md-8 col-md-offset-2">
+				<table class="table table-bordered">
 					<tr>
 
 						<th>Address</th>
 						<th>City</th>
 						<th>State</th>
 						<th>Zip</th>
+						<th> </th>
 						
 					</tr>
 
@@ -102,7 +245,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 							<? foreach ($entry as $value): ?>
 								<td><?= $value; ?></td>
 							<? endforeach; ?>
-								<td><a href="/address_book/address_book.php?remove=<?= $key ?>">X</a></td>
+								<td><a href="/address_book/address_book.php?remove=<?= $key ?>"><button class="btn btn-default3">Delete</button></a></td>
 						
 						</tr>
 
@@ -113,41 +256,76 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 		</div>
 	</div>
 
-	<form name="additem" id="" method="POST" action="address_book.php">
-			 
+<!-- TABLE END! -->
 
-		<input type="text" id="address" name="address" placeholder="Address">
+<!-- FORM BEGIN! -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1">
+			<div class="form-group">
 
-		<input type="text" id="city" name="city" placeholder="City">
-	
-		<input type="text" id="state" name="state" placeholder="State">
+				<form name="additem" id="" method="POST" action="address_book.php">
+					<div class="col-md-3">	 
+						<input type="text" class="form-control" id="address" name="address" placeholder="Address">
+					</div>
 
-		<input type="text" id="zip" name="zip" placeholder="Zip">
+					<div class="col-md-3">
+					<input type="text" class="form-control" id="city" name="city" placeholder="City">
+					</div>
 
-		<button value="submit" id="addNew">Submit</button>
-	
-			 
-	</form>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="state" name="state" placeholder="State">
+					</div>
 
-	<h1>Upload File</h1>
+					<div class="col-md-2">
+					<input type="text" class="form-control" id="zip" name="zip" placeholder="Zip">
+					</div>
 
-	<? if (isset($savedFilename)): ?>
+					<div class="col-md-2">
+					<button type="submit" class="btn btn-default2" id="addNew">Submit</button>
+					</div>
+						 
+				</form>
+			</div>
+		</div>
+		
+	</div>
+</div>
 
-		<p>You can download your file <a href="/address_book/uploads/<?= $filename ?>">here</a>.</p>
+<!-- FORM END! -->
 
-	<? endif; ?>
+<!-- UPLOAD BEGIN! -->
+<br>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="jumbotron">
+			  <h2>Upload File</h2>
+			  <p>
+			  		<? if (isset($savedFilename)): ?>
 
+							<p>You can download your file <a href="/address_book/uploads/<?= $filename ?>">here</a>.</p>
 
-    <form method="POST" enctype="multipart/form-data" action="/address_book/address_book.php">
-        <p>
-            <label for="file1">File to upload: </label>
-            <input type="file" id="file1" name="file1">
-        </p>
-        <p>
-            <input type="submit" value="Upload">
-        </p>
-    </form>
-				
+					<? endif; ?>
+			  </p>
+			  <p><form method="POST" enctype="multipart/form-data" action="/address_book/address_book.php">
+					        
+					            
+					            <div class="col-md-offset-3"><input class="btn" type="file" id="file1" name="file1"></div>
+					        
+					        
+					    </form><a class="btn btn-primary btn-lg" type="submit" value="Upload" role="button">Upload</a></p>
+			
+			</div>		
+		</div>
+	</div>
+</div>
+
+		   
+		
+
+<!-- UPLOAD END! -->
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

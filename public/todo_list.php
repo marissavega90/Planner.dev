@@ -1,5 +1,7 @@
 <?php
 
+class UnexpectedTypeException extends Exception { }
+
 require_once '../inc/filestore.php';
 
 $ToDoDataStore = new Filestore('data/todo.txt');
@@ -48,27 +50,20 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
 
         if (isset($_POST['todo'])) {
 
-            if(strlen($_POST['todo']) > 240) {
-                throw new Exception ('Must input item less than 240 characters!');
-
-                // elseif(strlen($_POST['todo']) == 0)
-
-                // {
-                //     throw new Exception ('Must input an item!');
-                // }
-            
+            if(strlen($_POST['todo']) > 240 || empty($_POST['todo'])) {
+                throw new UnexpectedTypeException ('Must input item less than 240 characters!');
+            }
 
                 $listItems[] = $_POST['todo'];
 
                 $ToDoDataStore->write($listItems);
-
-            } 
+            
         }
     }
 
-    catch (Exception $e) {
+    catch (UnexpectedTypeException $e) {
 
-        echo "<h3 align=\"center\" color=\"white\">Must input an item!</h3>";
+        echo $e->getMessage();
 
     }
 

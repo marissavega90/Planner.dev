@@ -1,51 +1,39 @@
 <?php
 
-class AddressDataStore
- {
-     public $this->filename = 'address_book.csv';
+require_once('/vagrant/sites/planner.dev/inc/filestore.php');
 
-     function readAddressBook($filename)
+class AddressDataStore extends Filestore
+
+{
+     public $filename = '';
+
+     public function __construct($input = 'address_book.csv')
      {
-         // Code to read file $this->filename
+     	// $this->filename = $input;
+        parent::__construct($input);
+     }
 
-		$handle = fopen($this->filename, 'r');
 
-		$addressBook = [];
+     
 
-			while(!feof($handle)) {
-				
-				$row = fgetcsv($handle);
-				
-				if (!empty($row)) {
+     public function readAddressBook()
+     {
+       return $this->read(); 
 
-					$addressBook[] = $row;
-				}
-			}
 
-		return $addressBook;
-
-	fclose($handle);
 		
-}
+	} 
 
-$readAddressBook = readAddressBook($filename);
-     }
+    function writeAddressBook($addressBook)
+    {
 
-     function writeAddressBook($addressesArray)
-     {
-         // Code to write $addressesArray to file $this->filename
-     	$addressesArray
-     	$handle = fopen($this->filename, 'w');
+    	$this->write($addressBook);
 
-		foreach ($array as $value) {
-		    fputcsv($handle, $value);
-		}
-
-	fclose($handle);
+	}
 
 }
-     }
 
- }
+
+
 
 ?>

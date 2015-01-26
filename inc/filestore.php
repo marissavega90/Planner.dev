@@ -1,6 +1,7 @@
 <?php
 
 class Filestore
+
 {
 	public $filename = '';
 	protected $isCSV = false;
@@ -55,7 +56,7 @@ class Filestore
 				// Code to read file $this->filename
 				$handle = fopen($this->filename, 'r');
 
-				$addressBook = [];
+				$toDoList = [];
 
 					while(!feof($handle)) {
 						
@@ -63,24 +64,24 @@ class Filestore
 						
 							if (!empty($row)) {
 
-								$addressBook[] = $row;
+								$toDoList[] = $row;
 							}
 					}
 
 
-				return $addressBook;
+				return $toDoList;
 
 		 }
 
 		 /**
 			* Writes contents of $array to csv $this->filename
 			*/
-		 private function writeCSV($addressBook)
+		 private function writeCSV($toDoList)
 		 {
 
 			$handle = fopen($this->filename, 'w');
 
-				foreach ($addressBook as $value) {
+				foreach ($toDoList as $value) {
 						fputcsv($handle, $value);
 				}
 

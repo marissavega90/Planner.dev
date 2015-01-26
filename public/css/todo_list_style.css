@@ -25,16 +25,7 @@ body {
             color: #FFFFFF;
             text-indent: 35px;
         }*/
-        table, td, th, tr {
-            background-color: rgba(128, 128, 128, 0.0);
-            /*height: 38px;
-            width: 370px;
-            padding: 1px;
-            margin: 40px;
-            margin-left: 250px;*/
-            text-align: justify;
-            color: #FFFFFF;
-        }
+     
         /*.table {
             height: 135px;
             width: 360px;
@@ -44,13 +35,7 @@ body {
             border: 2px solid #FFFFFF;
         }*/
 
-        #white {
-            color: white;
-        }
-
-        label {
-            color: white;
-        }
+        
 
         .fa-minus-square-o {
             color: white;

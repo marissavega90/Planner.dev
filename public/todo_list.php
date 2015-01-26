@@ -12,6 +12,18 @@ $listItems = [];
 
 
 
+define('DB_HOST', '127.0.0.1');
+
+define('DB_NAME', 'national_parks_db');
+
+define('DB_USER', 'parks_user');
+
+define('DB_PASS', 'parks_user');
+
+require_once ('../db_connect.php');
+
+
+
 
 // Verify there were uploaded files and no errors
 if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
@@ -78,7 +90,7 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
         $ToDoDataStore->write($listItems);
     }
 
-    
+    var_dump($listItems);
 
 ?>
 
@@ -91,12 +103,12 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
             <title>To-Do List</title>
 
             <!-- Font-Awesome -->
-            <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
+            <!-- <link rel="stylesheet" href="/font-awesome/css/font-awesome.css">
 
             <!-- Bootstrap -->
-            <link rel="stylesheet" href="/bootstrap/css/bootstrap.cyborg.min.css">
+            <!-- <link rel="stylesheet" href="/bootstrap/css/bootstrap.cyborg.min.css"> -->
 
-            <link rel="stylesheet" href="/css/todo_list_style.css">
+            <!-- <link rel="stylesheet" href="/css/todo_list_style.css"> -->
 
             <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
             <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -141,29 +153,24 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == UPLOAD_ERR_OK) {
             <div class="col-md-6 col-md-offset-3">
                 <h4 class="lead">What Do You Want To Do?</h4>
                     <ul id="white">
-                        <?  foreach ($listItems as $key => $item): ?> 
-                                <li><?= htmlspecialchars(strip_tags($item)) ?><a href=\"/todo_list.php?remove={$key}\"><i class=\"fa fa-minus-square-o\"></i></li></a>
-                                <?= "<form method=\"GET\" action=\"?remove={$key}\"></form>"; ?>
-                         
-                        <? endforeach; ?>  
+                        <? foreach($listItems as $key => $value): ?>
+                            <li><?= $value; ?> | <a href="/todo_list.php?remove=<?= $key ?>">X</a></li>
+                        <? endforeach; ?>
                     </ul>
                     <br>
                     <br>
-                    <form method="POST" action="todo_list.php">
-                        <h6 id="add">Add New Item <i class="fa fa-plus-square fa-1x"></i></h6>
-                        <p>
-                            <label for="todo">To</label>
-                            <input id="todo" name="todo" type="text" placeholder="Add your task">
-                        </p>
-                    <br>
-                        <button type="submit">Add File</button>
+                    <form name="additem" method="POST" enctype="multipart/form-data" action="/todo_list.php">
+                        
+                        <input id="todo" name="todo" type="text" placeholder="Add your task">
+                        
+                    
+                        <button type="submit" id="addNew">Add Item</button>
                     </form>
                         <h4>Upload File</h4>
 
             <?
             // Check if we saved a file
             if (isset($savedFilename)): ?>
-                // If we did, show a link to the uploaded file
                 <?= "<p>You can download your file <a href='/uploads/{$filename}'>here</a>.</p>"; ?>
             
             <? endif; ?>

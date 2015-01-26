@@ -29,8 +29,8 @@ if(!isset($_GET['page'])) {
 
 $offset = ($page-1) * 10;
 
-$query = $dbc->prepare("SELECT to_do, date
-				FROM to_do_list ORDER BY date LIMIT 10 OFFSET :offset");
+$query = $dbc->prepare("SELECT id, to_do, date, priority, complete
+				FROM to_do_list ORDER BY priority LIMIT 10 OFFSET :offset");
 
 $query->bindValue(':offset', $offset, PDO::PARAM_INT);
 
@@ -42,30 +42,43 @@ if (!empty($_POST)) {
 	if 
 		(
 			(empty($_POST['to_do'])) || 
-			(empty($_POST['date']))
+			(empty($_POST['date'])) ||
+			(empty($_POST['priority']))
 		) 
 	{
 	    	$errorMsg = 'Must fill out form completely!';
 
 		} else {
 
-		$query = "INSERT INTO to_do_list (to_do, date)
-			VALUES (:to_do, :date)";
+		$query = "INSERT INTO to_do_list (to_do, date, priority)
+			VALUES (:to_do, :date, :priority)";
 			// VALUES (:email, :name)');
 		$stmt = $dbc->prepare($query);
 
 		$stmt->bindValue(':to_do', $_POST['to_do'], PDO::PARAM_STR);
 	    $stmt->bindValue(':date',  $_POST['date'],  PDO::PARAM_STR);
+		$stmt->bindValue(':priority', $_POST['priority'], PDO::PARAM_STR);
+		// $stmt->bindValue(':complete', $_POST['complete'], PDO::PARAM_STR);
+		// $stmt->bindValue(':time_created', $_POST['time_created'], PDO::PARAM_STR);
+		
 
-	    $stmt->execute();
+	    
 
 		}
 }
 
+if (isset($_GET['remove'])) {
+	$id = $_GET['remove'];
+	$query = "DELETE FROM to_do_list
+			WHERE id = :id";
+	$stmt = $dbc->prepare($query);
+	$stmt->bindValue(':id', $id, PDO::PARAM_STR);
 
+	$stmt->execute();
+}
 
 ?>
-
+<!DOCTYPE html>
 <html>
 <head>
    
@@ -78,44 +91,61 @@ if (!empty($_POST)) {
     <!-- Bootstrap -->
     <link href="css/to_do_bootstrap.min.css" rel="stylesheet">
 
+    <style type="text/css">
+
+    .input-long {
+    	width: 310px;
+    }
+    </style>
+
     </head>
 <body>
 
 
-<table class="table table-bordered">
-	<tr>
-
-		<th>To-Do:</th>
-		<th>Date To-Do</th>
-		<th> </th>
-		
-	</tr>
-
-	<? foreach ($list_items as $key => $entry): ?>
-	
-
+<div class="container">
+	<h1>To-Do List</h1>
+	<table class="table table-bordered">
 		<tr>
-			<? foreach ($entry as $value): ?>
-				<td><?= $value; ?></td>
-			<? endforeach; ?>
+
+			<th>To-Do:</th>
+			<th>Date To-Do</th>
+			<th>Priority</th>
+			<th>Completed</th>
+			<th>Date Created</th>
+			<th>Delete Item</th>
+			
 		</tr>
 
-	<? endforeach; ?>
+		<? foreach ($list_items as $key => $entry): ?>
+
+			<tr>
+					<td><?= $entry['to_do']; ?></td>
+					<td><?= $entry['date']; ?></td>
+					<td><?= $entry['priority']; ?></td>
+					<td><?= $entry['complete']; ?></td>
+				
+				<td><? echo date('l jS \of F Y'); ?></td>
+
+				<td><a href="?remove=<?= $entry['id'] ?>"><button class="btn btn-default">Delete</button></a></td>
+			</tr>
+
+		<? endforeach; ?>
 
 
-</table>
+	</table>
 
-<form name="additem" id="" method="POST" action="todo_list_db.php">
- 
-	<input type="text" id="to_do" name="to_do" placeholder="Add new item">
+	<form name="additem" id="" method="POST" action="todo_list_db.php">
+	 
+		<input type="text" id="to_do" name="to_do" placeholder="Add new item">
 
+		<input type="text" id="date" name="date" placeholder="Date To-Do (YYYY-MM-DD)">
 
-	<input type="text" id="date" name="date" placeholder="Date To-Do">
+		<input class="input-long" type="text" id="priority" name="priority" placeholder="Priority (1 = Highest priority 5= Lowest priority)">
 
-	<button type="submit" name="submit">Submit</button>
+		<button type="submit" name="submit">Submit</button>
 
-</form>
-
+	</form>
+</div>
 <nav>
   	<ul class="pager">
 
